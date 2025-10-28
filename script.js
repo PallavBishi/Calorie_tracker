@@ -1,95 +1,55 @@
-const mealInput = document.getElementById("meal");
-const calInput = document.getElementById("calories");
-const addBtn = document.getElementById("add");
-const list = document.getElementById("list");
-const totalText = document.getElementById("total");
-const clearBtn = document.getElementById("clear");
-const statsBtn = document.getElementById("stats");
-const modal = document.getElementById("statsModal");
-const closeModal = document.getElementById("closeModal");
-const chartCanvas = document.getElementById("chart");
+const dailyLimit = 1800;
 
-let entries = JSON.parse(localStorage.getItem("entries")) || [];
+let data = JSON.parse(localStorage.getItem('calorieData')) || [];
+updateUI();
 
-function updateList() {
-  list.innerHTML = "";
-  const today = new Date().toDateString();
-  const todayEntries = entries.filter(e => new Date(e.date).toDateString() === today);
-  let total = 0;
+document.getElementById('add').addEventListener('click', () => {
+  const food = document.getElementById('food').value.trim();
+  const calories = parseInt(document.getElementById('calories').value);
 
-  todayEntries.forEach((entry) => {
-    total += entry.calories;
-    const li = document.createElement("li");
-    li.textContent = `${entry.meal}: ${entry.calories} kcal`;
+  if (food && calories > 0) {
+    const entry = {
+      id: Date.now(),
+      food,
+      calories,
+      date: new Date().toISOString().split('T')[0]
+    };
+    data.push(entry);
+    localStorage.setItem('calorieData', JSON.stringify(data));
+    updateUI();
+    document.getElementById('food').value = '';
+    document.getElementById('calories').value = '';
+  }
+});
+
+document.getElementById('clear').addEventListener('click', () => {
+  if (confirm('Clear all entries?')) {
+    data = [];
+    localStorage.removeItem('calorieData');
+    updateUI();
+  }
+});
+
+function updateUI() {
+  const today = new Date().toISOString().split('T')[0];
+  const todayEntries = data.filter(e => e.date === today);
+
+  const total = todayEntries.reduce((sum, e) => sum + e.calories, 0);
+  const remaining = dailyLimit - total;
+
+  document.getElementById('consumed').textContent = total;
+  document.getElementById('remaining').textContent = remaining >= 0 ? remaining : 0;
+
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+  todayEntries.forEach(e => {
+    const li = document.createElement('li');
+    li.innerHTML = `${e.food} <span>${e.calories} kcal</span>`;
     list.appendChild(li);
   });
-
-  totalText.textContent = `Total: ${total} kcal`;
-  localStorage.setItem("entries", JSON.stringify(entries));
 }
 
-addBtn.addEventListener("click", () => {
-  const meal = mealInput.value.trim();
-  const calories = parseInt(calInput.value);
-  if (meal && !isNaN(calories)) {
-    entries.push({ meal, calories, date: new Date().toISOString() });
-    mealInput.value = "";
-    calInput.value = "";
-    updateList();
-  }
-});
-
-clearBtn.addEventListener("click", () => {
-  if (confirm("Clear all entries?")) {
-    entries = [];
-    updateList();
-  }
-});
-
-statsBtn.addEventListener("click", () => {
-  showStats();
-  modal.style.display = "block";
-});
-
-closeModal.addEventListener("click", () => {
-  modal.style.display = "none";
-});
-
-function showStats() {
-  const grouped = {};
-
-  entries.forEach((e) => {
-    const date = new Date(e.date).toDateString();
-    grouped[date] = (grouped[date] || 0) + e.calories;
-  });
-
-  const labels = Object.keys(grouped).slice(-7); // last 7 days
-  const data = Object.values(grouped).slice(-7);
-
-  new Chart(chartCanvas, {
-    type: "bar",
-    data: {
-      labels,
-      datasets: [
-        {
-          label: "Calories per Day",
-          data,
-          backgroundColor: "#4caf50",
-        },
-      ],
-    },
-    options: {
-      scales: {
-        y: { beginAtZero: true },
-      },
-    },
-  });
-}
-
-// Initialize
-updateList();
-
-// PWA setup
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
+// PWA Support
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
 }
