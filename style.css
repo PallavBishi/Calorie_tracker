@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 body {
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(to bottom right, #e0f7ff, #c2e9fb);
-  color: #222;
+  background: linear-gradient(135deg, #dff6ff, #bde0fe);
+  color: #1a1a1a;
   margin: 0;
   padding: 0;
   display: flex;
@@ -11,29 +13,37 @@ body {
 }
 
 .container {
-  background: white;
-  padding: 20px 25px;
-  border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  background: #ffffffee;
+  padding: 25px 30px;
+  border-radius: 20px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
   width: 90%;
-  max-width: 400px;
+  max-width: 420px;
   text-align: center;
 }
 
 h1 {
   color: #0077b6;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .summary {
   background: #caf0f8;
-  border-radius: 12px;
-  padding: 10px;
-  margin-bottom: 15px;
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 18px;
+  box-shadow: inset 0 0 8px rgba(0, 119, 182, 0.1);
+}
+
+.summary p {
+  margin: 6px 0;
+  font-size: 15px;
 }
 
 .input-section {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 15px;
 }
 
@@ -41,22 +51,30 @@ input {
   flex: 1;
   padding: 10px;
   border: 1px solid #90e0ef;
-  border-radius: 8px;
+  border-radius: 10px;
+  background: #f8fcff;
   outline: none;
+}
+
+input:focus {
+  border-color: #0077b6;
+  box-shadow: 0 0 5px rgba(0, 119, 182, 0.3);
 }
 
 button {
   background: #0077b6;
-  color: white;
+  color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 10px 14px;
+  border-radius: 10px;
+  padding: 10px 16px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
 button:hover {
   background: #023e8a;
+  transform: translateY(-1px);
 }
 
 ul {
@@ -68,16 +86,18 @@ ul {
 
 li {
   background: #e0f7ff;
-  border-radius: 8px;
-  padding: 8px 10px;
-  margin-bottom: 5px;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
+  font-size: 14px;
 }
 
 #clear {
   background: #ff4d6d;
-  margin-top: 15px;
+  margin-top: 20px;
+  font-weight: 600;
 }
 
 #clear:hover {
