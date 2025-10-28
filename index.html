@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calorie Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+  <div class="container">
+    <h1>🥗 Calorie Tracker</h1>
+
+    <div class="input-section">
+      <input id="meal" type="text" placeholder="Meal name" />
+      <input id="calories" type="number" placeholder="Calories" />
+      <button id="add">Add</button>
+    </div>
+
+    <h2 id="total">Total: 0 kcal</h2>
+
+    <div class="records">
+      <h3>Today's Entries</h3>
+      <ul id="list"></ul>
+    </div>
+
+    <div class="footer-buttons">
+      <button id="stats">View Stats</button>
+      <button id="clear">Clear All</button>
+    </div>
+  </div>
+
+  <div id="statsModal" class="modal">
+    <div class="modal-content">
+      <h2>📊 Statistics</h2>
+      <canvas id="chart" width="300" height="200"></canvas>
+      <button id="closeModal">Close</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
